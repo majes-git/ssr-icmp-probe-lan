@@ -237,7 +237,7 @@ $ sudo ip netns exec probe-gw ping <lan-gateway>
 Check if the service and service-route from the virtual interface tenant (`_internal_`) are configured properly:
 
 ```
-# show fib service-name branch1.sites
+# show fib service-name probe-branch1
 ```
 
 ### 3. Configuration is correct but interface down
