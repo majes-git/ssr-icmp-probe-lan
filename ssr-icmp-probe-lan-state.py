@@ -7,12 +7,12 @@ def main():
     args = parse_args()
     session = get_session()
 
-    status, _ = evaluate_kni(session, args.kni_interface)
+    status, reason = evaluate_kni(session, args.kni_interface)
 
     if status:
-        print("UP")
+        print('{"Status": ["icmp reachability-probe in progress and successful"]}')
     else:
-        print("DOWN")
+        print(f'{{"Error": ["-> {reason}"]}}')
 
 
 if __name__ == "__main__":

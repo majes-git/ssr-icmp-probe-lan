@@ -1,3 +1,2 @@
-flask
-ping3
 requests
+requests-unixsocket
