@@ -15,17 +15,11 @@ Install {{ script }} script:
 
 # Iterate over all host interfaces that are referenced by static routes
 # as next-hop interface
-{% set jq_filter = ".datastore.config.authority.router[] as $r
-| $r.routing[].\"static-route\"[]
-| .[\"next-hop-interface\"][].interface as $ifname
-| $r.node[].\"device-interface\"[]
-| select(.name == $ifname and .type == \"host\")
-| .name" %}
+{% set jq_filter = '.datastore.config.authority.router[] as $r | $r.routing[]?."static-route"[]? | .["next-hop-interface"][]?.interface as $ifname | $r.node[]?."device-interface"[]? | select(.name == $ifname and .type == "host") | .name' %}
 {% set cmd = "jq -r '%s' /var/lib/128technology/t128-running.json" % jq_filter %}
 
 {% for interface in salt['cmd.run'](cmd).splitlines() %}
 {% set interface_dir = base_dir ~ "/" ~ interface %}
-{% set interface_config = "/var/lib/128technology/kni/host/" ~ interface ~ ".conf" %}
 Create {{ interface_dir }}:
   file.directory:
     - name: {{ interface_dir }}
