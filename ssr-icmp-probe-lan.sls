@@ -15,7 +15,15 @@ Install {{ script }} script:
 
 # Iterate over all host interfaces that are referenced by static routes
 # as next-hop interface
-{% set jq_filter = '.datastore.config.authority.router[] as $r | $r.routing[]?."static-route"[]? | .["next-hop-interface"][]?.interface as $ifname | $r.node[]?."device-interface"[]? | select(.name == $ifname and .type == "host") | .name' %}
+{% set router_name = salt['cmd.run']("jq -r '.init.routerName' /etc/128technology/global.init") %}
+{% set jq_filter = '.datastore.config.authority.router[]
+| select(.name == "' ~ router_name ~ '") as $r
+| $r.routing[]?."static-route"[]?
+| .["next-hop-interface"][]?.interface as $ifname
+| $r.node[]?."device-interface"[]?
+| select(.type == "host")."network-interface"[]?
+| select(.name == $ifname)
+| .name' %}
 {% set cmd = "jq -r '%s' /var/lib/128technology/t128-running.json" % jq_filter %}
 
 {% for interface in salt['cmd.run'](cmd).splitlines() %}
