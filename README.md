@@ -322,3 +322,14 @@ Verify whether the configuration is complete or not:
 * **Reachability-detection** is enabled for that service-route and has a **reachability-profile** and **icmp-probe-profile** assigned to it.
 
 The PCLI command `show device-interface name <host-interface>` should indicate if configuration elements are missing.
+
+#### 4. Downloaded files are incorrect on the conductor
+
+Verify whether the type of the files match the output below:
+
+```
+$ file /srv/salt/ssr-icmp-probe-lan*
+/srv/salt/ssr-icmp-probe-lan-monitoring.pyz: Zip archive data, made by v2.0 UNIX, extract using at least v2.0, last modified Thu Jan 31 01:58:29 2019, method=store, K\003\004\024
+/srv/salt/ssr-icmp-probe-lan-state.pyz:      Zip archive data, made by v2.0 UNIX, extract using at least v2.0, last modified Thu Jan 31 01:58:29 2019, method=store, K\003\004\024
+/srv/salt/ssr-icmp-probe-lan.sls:            ASCII text
+```
